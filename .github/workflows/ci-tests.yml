@@ -1,0 +1,34 @@
+name: CI Tests
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v1
+      name: Checkout repo
+      
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10.x
+
+    - name: Install dependencies
+      run: |
+        npm install -g typescript
+        npm install -g ts-node
+        npm install -g mocha
+        npm install
+
+    - name: Build code
+      run: npm run build
+    
+    - name: Run all tests
+      run: npm run test
+

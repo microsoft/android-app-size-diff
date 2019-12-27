@@ -1,0 +1,36 @@
+{
+    "manifestVersion": 1,
+    "id": "android-app-size-diff",
+    "name": "Android app size changes",
+    "version": "0.0.19",
+    "publisher": "PraveenPendyala",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "description": "Tools for Android app size changes",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "dist/src/assets/appSizeChangesIcon.png"
+    },
+    "files": [
+        {
+            "path": "dist/src/"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "android-app-size-diff-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "dist/src/"
+            }
+        }
+    ]
+}
