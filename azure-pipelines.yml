@@ -1,0 +1,11 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: android-app-size-diff-task@0
+  inputs:
+    baseAppPath: 'Hello'
+    targetAppPath: 'Human'
