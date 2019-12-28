@@ -7,5 +7,5 @@ pool:
 steps:
 - task: android-app-size-diff-task@0
   inputs:
-    baseAppPath: 'Hello'
+    baseAppPath: 'Praveen'
     targetAppPath: 'Human'
