@@ -5,7 +5,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: android-app-size-diff-task@0
+- task: android-app-size-diff-task@0.0.2
   inputs:
     baseAppPath: 'Hello'
     targetAppPath: 'Human'
