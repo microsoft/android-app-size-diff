@@ -2,12 +2,12 @@ import AdmZip from 'adm-zip';
 import * as path from 'path'
 import * as util from 'util';
 import MetaMfParser from './MetaMfParser';
-import ApkSizeSummary from './ApkSizeSummary';
+import ApkSizeSummary from './model/ApkSizeSummary';
 import { FilesSizeCalculator } from './FilesSizeCalculator';
 
 export default class ApkAnalyzer {
 
-    public async analyse(apkPath: string, workingDir?: string) : Promise<ApkSizeSummary> {
+    public async analyse(apkPath: string, apkLabel: string, workingDir?: string) : Promise<ApkSizeSummary> {
         if (util.isUndefined(workingDir)) {
             workingDir = path.join(path.dirname(apkPath), 'extracted');
         }
@@ -25,11 +25,12 @@ export default class ApkAnalyzer {
         const fileSizeCalc = new FilesSizeCalculator();
         const sizeSummary = new ApkSizeSummary();
 
-        sizeSummary.apkFile = fileSizeCalc.getFileSize(apkPath);
-        sizeSummary.arscFile = fileSizeCalc.getFilesSize(mfParser.getFiles('.arsc'));
-        sizeSummary.dexFiles = fileSizeCalc.getFilesSize(mfParser.getFiles('.dex'));
-        sizeSummary.nativeLibs = fileSizeCalc.getFilesSize(mfParser.getFiles('.so'));
-        sizeSummary.installSize = sizeSummary.apkFile + sizeSummary.dexFiles;
+        sizeSummary.apkLabel = apkLabel;
+        sizeSummary.sizeMetrics['apkSize'] = fileSizeCalc.getFileSize(apkPath);
+        sizeSummary.sizeMetrics['arscFile'] = fileSizeCalc.getFilesSize(mfParser.getFiles('.arsc'));
+        sizeSummary.sizeMetrics['dexFiles'] = fileSizeCalc.getFilesSize(mfParser.getFiles('.dex'));
+        sizeSummary.sizeMetrics['nativeLibs'] = fileSizeCalc.getFilesSize(mfParser.getFiles('.so'));
+        sizeSummary.sizeMetrics['installSize'] = sizeSummary.sizeMetrics['apkSize'] + sizeSummary.sizeMetrics['dexFiles'];
 
         return sizeSummary;
     }

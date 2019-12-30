@@ -23,7 +23,7 @@ describe('Sample task tests', function () {
         assert.equal(tr.warningIssues.length, 0, "should have no warnings");
         assert.equal(tr.errorIssues.length, 0, "should have no errors");
         console.log(tr.stdout);
-        assert.equal(tr.stdout.indexOf('apkFile') >= 0, true, "should contain size info");
+        assert.equal(tr.stdout.indexOf('apkSize') >= 0, true, "should contain size info");
         done();
     });
     

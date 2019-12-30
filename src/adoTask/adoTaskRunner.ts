@@ -1,6 +1,8 @@
 import * as adoTask from 'azure-pipelines-task-lib/task';
 import * as util from 'util';
 import ApkAnalyzer from '../apkAnalyzer/ApkAnalyzer';
+import ComparisionReportGenerator from '../apkAnalyzer/ComparisionReportGenerator';
+import { MarkdownReporter } from '../apkAnalyzer/reporter/MarkdownReporter';
 
 export default class AdoTaskRunner {
 
@@ -10,16 +12,25 @@ export default class AdoTaskRunner {
             const targetAppPath: string | undefined = adoTask.getInput('targetAppPath', true);
             const summaryOutputPath: string | undefined = adoTask.getInput('summaryOutputPath', false);
 
-            if (util.isUndefined(baseAppPath) || util.isUndefined(targetAppPath)) {
-                adoTask.setResult(adoTask.TaskResult.Failed, 'Invalid app paths supplied!');
-                return;
+            if (util.isUndefined(baseAppPath) 
+                || util.isUndefined(targetAppPath) 
+                || util.isUndefined(summaryOutputPath)) {
+                throw 'App paths not supplied!'
             }
 
-            const baseSizeSummary = await new ApkAnalyzer().analyse(baseAppPath);
-            const targetSizeSummary = await new ApkAnalyzer().analyse(targetAppPath);
+            const apkAnalyzer = new ApkAnalyzer();
+            const markdownReportor = new MarkdownReporter();
+            const compareReportGenerator = new ComparisionReportGenerator(
+                apkAnalyzer, markdownReportor);
 
-            console.log(baseSizeSummary);
-            console.log(targetSizeSummary);
+            console.log(await compareReportGenerator.generateComparisionReport(
+                baseAppPath,
+                targetAppPath,
+                summaryOutputPath,
+                'Base APK',
+                'Target APK',
+                ['apkSize', 'installSize', 'dexFiles', 'arscFile']
+            ));
         }
         catch (err) {
             adoTask.setResult(adoTask.TaskResult.Failed, err.message);

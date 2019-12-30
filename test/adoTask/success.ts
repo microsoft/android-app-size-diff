@@ -7,7 +7,6 @@ let tmr: tmrm.TaskMockRunner = new tmrm.TaskMockRunner(taskPath);
 
 tmr.setInput('baseAppPath', 'test/assets/test.apk');
 tmr.setInput('targetAppPath', 'test/assets/test.apk');
-tmr.setInput('summaryOutputPath', 'test.txt');
+tmr.setInput('summaryOutputPath', 'dist/test/testReport.md');
 
 tmr.run();
-
