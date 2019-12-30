@@ -1,0 +1,39 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "911fb029-c89b-4d09-a2d4-610486918018",
+    "name": "android-app-size-diff-task",
+    "friendlyName": "Android app size change summary",
+    "description": "Generates a summary of Android application size across different metrics",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "author": "Microsoft",
+    "version": {
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 19
+    },
+    "instanceNameFormat": "Android App size change - $(baseAppPath) vs $(targetAppPath)",
+    "inputs": [
+        {
+            "name": "baseAppPath",
+            "type": "string",
+            "label": "Base app path",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Path to base apk / aab. This is the app before changes"
+        },
+        {
+            "name": "targetAppPath",
+            "type": "string",
+            "label": "Target app path",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Path to target apk / aab. This is the app after changes"
+        }
+    ],
+    "execution": {
+        "Node10": {
+            "target": "ado-index.js"
+        }
+    }
+}
