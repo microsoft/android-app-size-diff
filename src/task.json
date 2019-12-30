@@ -29,6 +29,14 @@
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "Path to target apk / aab. This is the app after changes"
+        },
+        {
+            "name": "summaryOutputPath",
+            "type": "string",
+            "label": "Summary output path",
+            "defaultValue": "summary.md",
+            "required": true,
+            "helpMarkDown": "Output file where comparision summary should be written to"
         }
     ],
     "execution": {

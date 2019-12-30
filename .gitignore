@@ -3,3 +3,7 @@ dist
 *.vsix
 .taskkey
 **/.taskkey
+.DS_Store
+**/.DS_Store
+test/assets/extracted/
+
