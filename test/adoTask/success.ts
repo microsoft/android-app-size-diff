@@ -5,7 +5,8 @@ import path = require('path');
 let taskPath = path.join(__dirname, '../../src/', 'ado-index.js');
 let tmr: tmrm.TaskMockRunner = new tmrm.TaskMockRunner(taskPath);
 
-tmr.setInput('baseAppPath', 'human');
+tmr.setInput('baseAppPath', 'test/assets/test.apk');
+tmr.setInput('targetAppPath', 'test/assets/test.apk');
+tmr.setInput('summaryOutputPath', 'dist/test/testReport.md');
 
 tmr.run();
-

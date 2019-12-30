@@ -5,7 +5,7 @@ const supportedBumps = ["major", "minor", "patch"]
 
 const nodePackagJsonPath = 'package.json';
 const adoExtensionJsonPath = 'ado-extension.json';
-const adoTaskJsonPath = 'ado-task.json';
+const adoTaskJsonPath = 'src/task.json';
 
 if (process.argv.length != 3) {
     throw "Need exactly one argument!"

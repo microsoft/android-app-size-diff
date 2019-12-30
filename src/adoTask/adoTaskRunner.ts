@@ -1,28 +1,39 @@
-import * as tl from 'azure-pipelines-task-lib/task';
-import * as shell from "shelljs";
-import * as os from 'os';
-import * as path from 'path';
+import * as adoTask from 'azure-pipelines-task-lib/task';
+import * as util from 'util';
+import ApkAnalyzer from '../apkAnalyzer/ApkAnalyzer';
+import ComparisionReportGenerator from '../apkAnalyzer/ComparisionReportGenerator';
+import { MarkdownReporter } from '../apkAnalyzer/reporter/MarkdownReporter';
 
 export default class AdoTaskRunner {
 
     public async run() {
-        const platform = os.type();
-
-        const apkanalyzerPath = path.join('dist', 'src', 'bin', platform, 'tools', 'bin', 'apkanalyzer');
-        const testApkPath = path.join('test', 'assets', 'test.apk');
-
-        shell.exec(apkanalyzerPath + ' apk download-size ' + testApkPath);
-
         try {
-            const inputString: string | undefined = tl.getInput('baseAppPath', true);
-            if (inputString == 'bad') {
-                tl.setResult(tl.TaskResult.Failed, 'Bad input was given');
-                return;
+            const baseAppPath: string | undefined = adoTask.getInput('baseAppPath', true);
+            const targetAppPath: string | undefined = adoTask.getInput('targetAppPath', true);
+            const summaryOutputPath: string | undefined = adoTask.getInput('summaryOutputPath', false);
+
+            if (util.isUndefined(baseAppPath) 
+                || util.isUndefined(targetAppPath) 
+                || util.isUndefined(summaryOutputPath)) {
+                throw 'App paths not supplied!'
             }
-            console.log('Hello', inputString);
+
+            const apkAnalyzer = new ApkAnalyzer();
+            const markdownReportor = new MarkdownReporter();
+            const compareReportGenerator = new ComparisionReportGenerator(
+                apkAnalyzer, markdownReportor);
+
+            console.log(await compareReportGenerator.generateComparisionReport(
+                baseAppPath,
+                targetAppPath,
+                summaryOutputPath,
+                'Base APK',
+                'Target APK',
+                ['apkSize', 'installSize', 'dexFiles', 'arscFile']
+            ));
         }
         catch (err) {
-            tl.setResult(tl.TaskResult.Failed, err.message);
+            adoTask.setResult(adoTask.TaskResult.Failed, err.message);
         }
     }
 
