@@ -1,0 +1,16 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: android-app-size-diff-task@0
+  inputs:
+    baseAppPath: test/assets/test.apk
+    targetAppPath: test/assets/test.apk
+    summaryOutputPath: summary.md
+  displayName: 'Run APK size comparision'
+
+- script: cat summary.md
+  displayName: 'Print generated summary'
