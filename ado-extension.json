@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "android-app-size-diff",
     "name": "Android app size changes",
-    "version": "0.0.20",
+    "version": "0.0.22",
     "publisher": "PraveenPendyala",
     "targets": [
         {
@@ -18,7 +18,7 @@
     },
     "files": [
         {
-            "path": "dist/src/"
+            "path": "dist/src"
         }
     ],
     "contributions": [
@@ -29,7 +29,7 @@
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "dist/src/"
+                "name": "dist/src"
             }
         }
     ]
