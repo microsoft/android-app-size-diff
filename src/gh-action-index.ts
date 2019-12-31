@@ -1,3 +1,3 @@
-import AdoTaskRunner from './adoTask/adoTaskRunner'
+import GithubActionRunner from './githubAction/GithubActionRunner'
 
-new AdoTaskRunner().run();
+new GithubActionRunner().run();
