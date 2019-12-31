@@ -1,6 +1,6 @@
 {
     "name": "android-app-size-ado",
-    "version": "0.0.22",
+    "version": "0.0.24",
     "description": "Azure DevOps task to measure the size in Android app size by looking at 2 given APKs and AABs",
     "main": "index.js",
     "scripts": {
