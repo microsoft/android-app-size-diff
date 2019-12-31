@@ -1,0 +1,18 @@
+name: 'Android App size difference'
+description: 'Compares the size of 2 APKs'
+inputs:
+  baseAppPath:
+    description: 'Path to base apk. This is the app before changes'
+    required: true
+    default: ''
+  targetAppPath:
+    description: 'Path to target apk. This is the app after changes'
+    required: true
+    default: ''
+  summaryOutputPath:
+    description: 'Output file where comparision summary should be written to'
+    required: true
+    default: ''
+runs:
+  using: 'node12'
+  main: 'dist_gh_action/index.js'

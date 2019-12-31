@@ -10,7 +10,7 @@
     "version": {
         "Major": 0,
         "Minor": 0,
-        "Patch": 22
+        "Patch": 24
     },
     "instanceNameFormat": "Android App size change - $(baseAppPath) vs $(targetAppPath)",
     "inputs": [
@@ -20,7 +20,7 @@
             "label": "Base app path",
             "defaultValue": "",
             "required": true,
-            "helpMarkDown": "Path to base apk / aab. This is the app before changes"
+            "helpMarkDown": "Path to base apk. This is the app before changes"
         },
         {
             "name": "targetAppPath",
@@ -28,7 +28,7 @@
             "label": "Target app path",
             "defaultValue": "",
             "required": true,
-            "helpMarkDown": "Path to target apk / aab. This is the app after changes"
+            "helpMarkDown": "Path to target apk. This is the app after changes"
         },
         {
             "name": "summaryOutputPath",

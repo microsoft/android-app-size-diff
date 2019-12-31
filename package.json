@@ -1,6 +1,6 @@
 {
     "name": "android-app-size-ado",
-    "version": "0.0.22",
+    "version": "0.0.24",
     "description": "Azure DevOps task to measure the size in Android app size by looking at 2 given APKs and AABs",
     "main": "index.js",
     "scripts": {
@@ -9,7 +9,8 @@
         "build-ts": "tsc",
         "copy-files": "ts-node copyFiles.ts",
         "test": "npm run build && mocha dist/test/**/*.js",
-        "bundle": "npm run build && npm run bundle-ado-task",
+        "bundle": "npm run build && npm run bundle-ado-task && npm run bundle-gh-action",
+        "bundle-gh-action": "ncc build src/gh-action-index.ts -m -o dist_gh_action",
         "bundle-ado-task": "tfx extension create --manifest-globs ado-extension.json",
         "bump-major": "ts-node bumpVersion.ts major",
         "bump-minor": "ts-node bumpVersion.ts minor",
@@ -32,6 +33,7 @@
     },
     "homepage": "https://github.com/microsoft/android-app-size-ci#readme",
     "dependencies": {
+        "@actions/core": "^1.2.0",
         "@types/adm-zip": "^0.4.32",
         "@types/line-reader": "0.0.28",
         "adm-zip": "^0.4.13",
