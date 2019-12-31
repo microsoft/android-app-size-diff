@@ -3,13 +3,6 @@ import * as path from 'path';
 import * as util from 'util';
 
 /**
- * Map from extension to all files with that extension
- */
-interface ExtensionFiles {
-    [key: string]: Array<string>;
-}
-
-/**
  * Parses the contents of the Android MetaMf file and sorts the list of files based on extension 
  */
  export default class MetaMfParser {
@@ -53,11 +46,14 @@ interface ExtensionFiles {
         
         const filePath = path.join(this.mBasePath, line.split('Name: ', 2)[1]);
         const extension = path.extname(filePath);
-
+        
         if (!this.mFilesExtensionMap.has(extension)) {
             this.mFilesExtensionMap.set(extension, []);
         }
 
-        this.mFilesExtensionMap.get(extension)?.push(filePath);
+        const filesForExt = this.mFilesExtensionMap.get(extension);
+        if (!util.isUndefined(filesForExt)) {
+            filesForExt.push(filePath);
+        }
     }
  }
