@@ -1,7 +1,7 @@
 {
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
     "id": "911fb029-c89b-4d09-a2d4-610486918018",
-    "name": "android-app-size-diff-task",
+    "name": "android-app-size-diff",
     "friendlyName": "Android app size change summary",
     "description": "Generates a summary of Android application size across different metrics",
     "helpMarkDown": "",
@@ -10,7 +10,7 @@
     "version": {
         "Major": 0,
         "Minor": 0,
-        "Patch": 24
+        "Patch": 25
     },
     "instanceNameFormat": "Android App size change - $(baseAppPath) vs $(targetAppPath)",
     "inputs": [

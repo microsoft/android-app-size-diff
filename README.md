@@ -9,7 +9,7 @@ This is currently in very early stages so, features offered are very limited. Se
 - In a Azure DevOps Pipeline
 
    ```yml
-    - task: android-app-size-diff-task@0
+    - task: android-app-size-diff@0
       inputs:
         baseAppPath: test/assets/test.apk
         targetAppPath: test/assets/test.apk
@@ -20,7 +20,7 @@ This is currently in very early stages so, features offered are very limited. Se
 - In a GitHub Workflow (only after this repo becomes public)
 
    ```yml
-     - uses: microsoft/android-app-size-ci@v1
+     - uses: microsoft/android-app-size-diff@v1
        name: Run APK size comparision
        with:
         baseAppPath: test/assets/test.apk
