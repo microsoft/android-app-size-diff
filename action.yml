@@ -1,5 +1,8 @@
 name: 'Android App size difference'
 description: 'Compares the size of 2 APKs'
+branding:
+  icon: 'smartphone'
+  color: 'green'
 inputs:
   baseAppPath:
     description: 'Path to base apk. This is the app before changes'
