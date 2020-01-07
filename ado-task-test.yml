@@ -12,7 +12,7 @@ steps:
     targetAppPath: test/assets/test.apk
     targetAppLabel: Target app
     summaryOutputPath: summary.md
-    metrics: appSize, installSize, arscFile, nativeLibs, dexFiles
+    metrics: apkSize, installSize, arscFile, nativeLibs, dexFiles
     thresholds: 10, 10, 10, 10, 10
   displayName: 'Run APK size comparision'
 
