@@ -65,7 +65,7 @@ export default class CiRunner {
             abortRun = true;
         }
 
-        const metricsList: Array<string> = metrics.split(',');
+        const metricsList: Array<string> = this.readCsv(metrics);
         var thresholdsList: Array<number> = []
         try {
             thresholdsList = this.parseThresholdsFromInput(thresholds, metricsList);
@@ -114,7 +114,7 @@ export default class CiRunner {
         }
 
         // Check if same number of thresholds and metrics are passed
-        const thresholdStrings: Array<string> = thresholdsInput.split(',');
+        const thresholdStrings: Array<string> = this.readCsv(thresholdsInput);
         if (thresholdStrings.length != metricsList.length) {
             throw 'Thresholds must be set corresponding to each metric in metrics or none!';
         }
@@ -127,5 +127,9 @@ export default class CiRunner {
         return thresholdsList;
     }
     
+    private readCsv(inputString: string): Array<string> {
+        const valuesList: Array<string> = inputString.split(',');
+        return valuesList.map((value) => value.trim());
+    }
 
 }
