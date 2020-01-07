@@ -8,8 +8,12 @@ steps:
 - task: android-app-size-diff@0
   inputs:
     baseAppPath: test/assets/test.apk
+    baseAppLabel: Base app
     targetAppPath: test/assets/test.apk
+    targetAppLabel: Target app
     summaryOutputPath: summary.md
+    metrics: apkSize, installSize, arscFile, nativeLibs, dexFiles
+    thresholds: 10, 10, 10, 10, 10
   displayName: 'Run APK size comparision'
 
 - script: cat summary.md

@@ -7,6 +7,10 @@ let tmr: tmrm.TaskMockRunner = new tmrm.TaskMockRunner(taskPath);
 
 tmr.setInput('baseAppPath', 'test/assets/test.apk');
 tmr.setInput('targetAppPath', 'test/assets/test.apk');
+tmr.setInput('baseAppLabel', 'Base APK');
+tmr.setInput('targetAppLabel', 'Target APK');
+tmr.setInput('metrics', 'apkSize, installSize');
+tmr.setInput('thresholds', '20, 50');
 tmr.setInput('summaryOutputPath', 'dist/test/testReport.md');
 
 tmr.run();
