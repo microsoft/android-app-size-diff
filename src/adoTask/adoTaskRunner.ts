@@ -4,6 +4,10 @@ import { isUndefined } from 'util';
 
 export class AdoCiCore implements CiCore {
 
+    getCiName(): string {
+        return 'Azure DevOps';
+    }
+
     getInput(name: string): string {
         const value = adoTask.getInput(name);
         return isUndefined(value) ? "" : value;
@@ -24,6 +28,10 @@ export class AdoCiCore implements CiCore {
     logError(message: string) {
         return adoTask.error(message);
     }
+
+    markAsFailed(errorMessage: string) {
+        return adoTask.setResult(adoTask.TaskResult.Failed, errorMessage);
+    }
 }
 
 export default class AdoTaskRunner {
@@ -32,7 +40,7 @@ export default class AdoTaskRunner {
         try {
             const adoCiCore = new AdoCiCore();
             const ciRunner = new CiRunner(adoCiCore);
-            await ciRunner.run();
+            await ciRunner.runWithTelemetry();
         }
         catch (err) {
             adoTask.setResult(adoTask.TaskResult.Failed, err.message);

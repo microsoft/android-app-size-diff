@@ -4,6 +4,10 @@ import { isUndefined } from 'util';
 
 export class GithubCiCore implements CiCore {
 
+    getCiName(): string {
+        return 'GitHub';
+    }
+
     getInput(name: string): string {
         const value = ghAction.getInput(name);
         return isUndefined(value) ? "" : value;
@@ -24,6 +28,10 @@ export class GithubCiCore implements CiCore {
     logError(message: string) {
         return ghAction.error(message);
     }
+
+    markAsFailed(errorMessage: string) {
+        return ghAction.setFailed(errorMessage);
+    }
 }
 
 export default class GithubActionRunner {
@@ -32,7 +40,7 @@ export default class GithubActionRunner {
         try {
             const githubCore = new GithubCiCore();
             const ciRunner = new CiRunner(githubCore);
-            await ciRunner.run();
+            await ciRunner.runWithTelemetry();
         }
         catch (err) {
             ghAction.setFailed(err.message);

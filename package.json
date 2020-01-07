@@ -1,6 +1,6 @@
 {
     "name": "android-app-size-diff",
-    "version": "0.0.27",
+    "version": "0.0.28",
     "description": "Azure DevOps task to measure the size in Android app size by looking at 2 given APKs and AABs",
     "main": "index.js",
     "scripts": {
@@ -37,6 +37,7 @@
         "@types/adm-zip": "^0.4.32",
         "@types/line-reader": "0.0.28",
         "adm-zip": "^0.4.13",
+        "applicationinsights": "^1.6.0",
         "azure-pipelines-task-lib": "^2.9.3",
         "line-reader": "^0.4.0"
     },

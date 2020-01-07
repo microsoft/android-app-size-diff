@@ -10,7 +10,7 @@
     "version": {
         "Major": 0,
         "Minor": 0,
-        "Patch": 27
+        "Patch": 28
     },
     "instanceNameFormat": "Android App size change - $(baseAppPath) vs $(targetAppPath)",
     "inputs": [
