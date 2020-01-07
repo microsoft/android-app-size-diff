@@ -20,7 +20,7 @@ This is currently in very early stages so, features offered are very limited. Se
 - In a GitHub Workflow (only after this repo becomes public)
 
    ```yml
-     - uses: microsoft/android-app-size-diff@v1
+     - uses: microsoft/android-app-size-diff@v0.27
        name: Run APK size comparision
        with:
         baseAppPath: test/assets/test.apk
