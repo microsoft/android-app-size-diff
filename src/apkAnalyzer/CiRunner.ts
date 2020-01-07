@@ -3,8 +3,15 @@ import ComparisionReportGenerator from '../apkAnalyzer/ComparisionReportGenerato
 import { MarkdownReporter } from '../apkAnalyzer/reporter/MarkdownReporter';
 import ComparisionReport from './model/ComparisionReport';
 import ThresholdChecker from './ThresholdChecker';
+import * as appInsights from 'applicationinsights'
 
 export interface CiCore {
+
+    /**
+     * @returns the name of the CI
+     */
+    getCiName(): string;
+
     /**
      * Gets an input from the CI
      * @param name
@@ -21,6 +28,12 @@ export interface CiCore {
     logInfo(message: string): any;
     logWarning(message: string): any;
     logError(message: string): any;
+
+    /**
+     * Marks the run as failure
+     * @param errorMessage Error message
+     */
+    markAsFailed(errorMessage: string): any;
 }
 
 /**
@@ -29,13 +42,59 @@ export interface CiCore {
 export default class CiRunner {
     ciCore: CiCore; // either Github action core or ADO Task
     thresholdChecker: ThresholdChecker;
+    telemetryClient: appInsights.TelemetryClient;
 
     constructor(ciCore: CiCore) {
         this.ciCore = ciCore;
         this.thresholdChecker = new ThresholdChecker(ciCore);
+
+        // Configure and enable telemetry
+        appInsights.setup('0ba004b8-ff05-41fa-a241-3f026d68fc3a') // Change this to your own instrumentation key
+            .setAutoCollectExceptions(true)
+            .setSendLiveMetrics(false)
+            .start();
+        this.telemetryClient = appInsights.defaultClient;
     }
 
-    public async run() {
+    public async runWithTelemetry() {
+        // Send app start telemetry
+        const startTime = new Date().getTime();
+        const telemetryProperties = {
+            ciName: this.ciCore.getCiName()
+        }
+        this.telemetryClient.trackEvent({
+            name: 'AppStart',
+            properties: telemetryProperties
+        });
+
+        var result: any;
+        try {
+            result = await this.run();
+        } catch (err) {
+            // Send error telemetry
+            this.telemetryClient.trackException({
+                exception: err,
+                properties: telemetryProperties
+            });
+            this.telemetryClient.flush()
+
+            throw err;
+        }
+
+        // Send performance telemetry
+        const endTime = new Date().getTime();
+        const elapsedTime = endTime - startTime;
+        this.telemetryClient.trackMetric({
+            name: 'RunPerformance',
+            value: elapsedTime,
+            properties: telemetryProperties
+        });
+        this.telemetryClient.flush()
+
+        return result;
+    }
+
+    private async run() {
         const baseAppPath = this.ciCore.getInput('baseAppPath');
         const targetAppPath = this.ciCore.getInput('targetAppPath');
         const baseAppLabel = this.ciCore.getInput('baseAppLabel');
@@ -96,10 +155,10 @@ export default class CiRunner {
 
         // Check if thresholds are adhered to
         if (!this.thresholdChecker.checkThresholds(comparisionReport)) {
-            throw 'App size increased significantly in at least one metric!';
+            this.ciCore.markAsFailed('App size increased significantly in at least one metric!');
         }
-
         console.log(comparisionReport);
+
         return comparisionReport;
     }
 
