@@ -5,7 +5,6 @@ import IReportor from './reporter/IReporter';
 /**
  * Generates a report comparsing two different APks
  */
-
  export default class ComparisionReportGenerator {
    apkAnalyser: ApkAnalyzer;
    reporter: IReportor;
@@ -19,9 +18,10 @@ import IReportor from './reporter/IReporter';
        baseApkPath: string, 
        targetApkPath: string,
        reportOutputPath: string,
-       baseApkLabel: string = 'Base APK',
-       targetApkLabel: string = 'Target APK',
-       includeMetrics: Array<string> = ['apkSize', 'installSize', 'dexFiles']) : Promise<ComparisionReport> {
+       baseApkLabel: string,
+       targetApkLabel: string,
+       includeMetrics: Array<string>,
+       thresholds: Array<number>) : Promise<ComparisionReport> {
          const baseSummary = await this.apkAnalyser.analyse(baseApkPath, baseApkLabel);
          const targetSummary = await this.apkAnalyser.analyse(targetApkPath, targetApkLabel);
 
@@ -29,7 +29,7 @@ import IReportor from './reporter/IReporter';
          comparisionReport.baseApkLabel = baseSummary.apkLabel;
          comparisionReport.targetApkLabel = targetSummary.apkLabel;
 
-         includeMetrics.forEach(metric => {
+         includeMetrics.forEach((metric, index) => {
             const baseMetric = baseSummary.sizeMetrics[metric];
             const targetMetric = baseSummary.sizeMetrics[metric];
             const difference = targetMetric - baseMetric;
@@ -38,7 +38,8 @@ import IReportor from './reporter/IReporter';
                metricName: metric,
                baseValue: baseMetric,
                targetValue: targetMetric,
-               difference: difference
+               difference: difference,
+               threshold: thresholds[index]
             });
          });
 

@@ -1,10 +1,26 @@
-import * as util from 'util';
 import ApkAnalyzer from '../apkAnalyzer/ApkAnalyzer';
 import ComparisionReportGenerator from '../apkAnalyzer/ComparisionReportGenerator';
 import { MarkdownReporter } from '../apkAnalyzer/reporter/MarkdownReporter';
+import ComparisionReport from './model/ComparisionReport';
+import ThresholdChecker from './ThresholdChecker';
 
 export interface CiCore {
-    getInput(name: string): string | undefined;
+    /**
+     * Gets an input from the CI
+     * @param name
+     */
+    getInput(name: string): string;
+
+    /**
+     * Sets an output variable on the CI
+     * @param key 
+     * @param value 
+     */
+    setOutput(key: string, value: string): any;
+
+    logInfo(message: string): any;
+    logWarning(message: string): any;
+    logError(message: string): any;
 }
 
 /**
@@ -12,20 +28,55 @@ export interface CiCore {
  */
 export default class CiRunner {
     ciCore: CiCore; // either Github action core or ADO Task
+    thresholdChecker: ThresholdChecker;
 
     constructor(ciCore: CiCore) {
         this.ciCore = ciCore;
+        this.thresholdChecker = new ThresholdChecker(ciCore);
     }
 
     public async run() {
         const baseAppPath = this.ciCore.getInput('baseAppPath');
         const targetAppPath = this.ciCore.getInput('targetAppPath');
+        const baseAppLabel = this.ciCore.getInput('baseAppLabel');
+        const targetAppLabel = this.ciCore.getInput('targetAppLabel');
         const summaryOutputPath = this.ciCore.getInput('summaryOutputPath');
+        const metrics = this.ciCore.getInput('metrics');
+        const thresholds = this.ciCore.getInput('thresholds');
 
-        if (util.isUndefined(baseAppPath) 
-            || util.isUndefined(targetAppPath) 
-            || util.isUndefined(summaryOutputPath)) {
-            throw 'App paths not supplied!'
+        var abortRun = false;
+        if (!baseAppPath || !targetAppPath) {
+            this.ciCore.logError('App paths not supplied!');
+            abortRun = true;
+        }
+
+        if (!baseAppLabel || !targetAppLabel) {
+            this.ciCore.logError('App labels not supplied!');
+            abortRun = true;
+        }
+
+        if (!summaryOutputPath) {
+            this.ciCore.logError('Summary path not supplied!');
+            abortRun = true;
+        }
+
+        if (!metrics) {
+            this.ciCore.logError('Must pick at least one metric!');
+            abortRun = true;
+        }
+
+        const metricsList: Array<string> = metrics.split(',');
+        var thresholdsList: Array<number> = []
+        try {
+            thresholdsList = this.parseThresholdsFromInput(thresholds, metricsList);
+        } catch (error) {
+            this.ciCore.logError('Error parsing thresholds! ' + error);
+            abortRun = true;
+        }
+
+        // Fail if we have to abort because at least one of the required conditions are not met
+        if (abortRun) {
+            throw 'Invalid / illegal task inputs!';
         }
 
         const apkAnalyzer = new ApkAnalyzer();
@@ -33,14 +84,47 @@ export default class CiRunner {
         const compareReportGenerator = new ComparisionReportGenerator(
             apkAnalyzer, markdownReportor);
 
-        return console.log(await compareReportGenerator.generateComparisionReport(
+        const comparisionReport : ComparisionReport = await compareReportGenerator.generateComparisionReport(
             baseAppPath,
             targetAppPath,
             summaryOutputPath,
-            'Base APK',
-            'Target APK',
-            ['apkSize', 'installSize', 'dexFiles', 'arscFile']
-        ));
+            baseAppLabel,
+            targetAppLabel,
+            metricsList,
+            thresholdsList
+        );
+
+        // Check if thresholds are adhered to
+        if (!this.thresholdChecker.checkThresholds(comparisionReport)) {
+            throw 'App size increased significantly in at least one metric!';
+        }
+
+        console.log(comparisionReport);
+        return comparisionReport;
+    }
+
+    private parseThresholdsFromInput(thresholdsInput: string, metricsList: Array<string>): Array<number> {
+        const thresholdsList: Array<number> = [];
+
+        // If no thresholds set, just use NaN for each metric as a threshold
+        if (!thresholdsInput) {
+            this.ciCore.logWarning('No thresholds supplied. Drastic changes in app size metrics will not fail this task!');
+            metricsList.forEach(() => thresholdsList.push(NaN));
+            return thresholdsList;
+        }
+
+        // Check if same number of thresholds and metrics are passed
+        const thresholdStrings: Array<string> = thresholdsInput.split(',');
+        if (thresholdStrings.length != metricsList.length) {
+            throw 'Thresholds must be set corresponding to each metric in metrics or none!';
+        }
+
+        // Parse threshold for each metric
+        metricsList.forEach((_, index) => {
+            const thresholdValue = parseInt(thresholdStrings[index]);
+            thresholdsList.push(thresholdValue);
+        });
+        return thresholdsList;
     }
     
 

@@ -3,6 +3,7 @@ export interface ComparisionMetric {
     baseValue: number;
     targetValue: number;
     difference: number;
+    threshold: number;
 }
 
 export default class ComparisionReport {

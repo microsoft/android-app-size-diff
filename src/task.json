@@ -18,17 +18,33 @@
             "name": "baseAppPath",
             "type": "string",
             "label": "Base app path",
-            "defaultValue": "",
+            "defaultValue": "base.apk",
             "required": true,
             "helpMarkDown": "Path to base apk. This is the app before changes"
+        },
+        {
+            "name": "baseAppLabel",
+            "type": "string",
+            "label": "Base app label",
+            "defaultValue": "Base APK",
+            "required": false,
+            "helpMarkDown": "Label to use for the base app in the report"
         },
         {
             "name": "targetAppPath",
             "type": "string",
             "label": "Target app path",
-            "defaultValue": "",
+            "defaultValue": "target.apk",
             "required": true,
             "helpMarkDown": "Path to target apk. This is the app after changes"
+        },
+        {
+            "name": "targetAppLabel",
+            "type": "string",
+            "label": "Target app label",
+            "defaultValue": "Target APK",
+            "required": false,
+            "helpMarkDown": "Label to use for the target app in the report"
         },
         {
             "name": "summaryOutputPath",
@@ -37,6 +53,22 @@
             "defaultValue": "summary.md",
             "required": true,
             "helpMarkDown": "Output file where comparision summary should be written to"
+        },
+        {
+            "name": "metrics",
+            "type": "string",
+            "label": "Size metrics",
+            "defaultValue": "apkSize, installSize, dexFiles, arscFile, nativeLibs",
+            "required": false,
+            "helpMarkDown": "A comma seperated list of size metrics to include in the summary. Possible values are `apkSize`, `installSize`, `dexFiles`, `arscFile`, `nativeLibs`"
+        },
+        {
+            "name": "thresholds",
+            "type": "string",
+            "label": "Size thresholds",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "A comma seperated list of thresholds for each of the metrics in bytes. If this is empty, no thresholding will apply. When this is not empty, the task will fail when any of the given thresholds are crossed."
         }
     ],
     "execution": {
