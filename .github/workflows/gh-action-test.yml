@@ -17,9 +17,13 @@ jobs:
     - name: Run App size diff
       uses: ./
       with:
-        baseAppPath: 'test/assets/test.apk'
-        targetAppPath: 'test/assets/test.apk'
+        baseAppPath: test/assets/test.apk
+        baseAppLabel: Base app
+        targetAppPath: test/assets/test.apk
+        targetAppLabel: Target app
         summaryOutputPath: summary.md
+        metrics: apkSize, installSize, arscFile, nativeLibs, dexFiles
+        thresholds: 10, 10, 10, 10, 10
 
     - name: Print summary
       run: cat summary.md
