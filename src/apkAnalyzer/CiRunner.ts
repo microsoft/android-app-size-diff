@@ -63,33 +63,39 @@ export default class CiRunner {
             ciName: this.ciCore.getCiName()
         }
         this.telemetryClient.trackEvent({
-            name: 'AppStart',
+            name: 'RunStarted',
             properties: telemetryProperties
         });
 
         var result: any;
         try {
             result = await this.run();
+
+            // Send success telemetry
+            const endTime = new Date().getTime();
+            const elapsedTime = endTime - startTime;
+            this.telemetryClient.trackEvent({
+                name: 'RunSuccess',
+                measurements: {
+                    duration: elapsedTime
+                },
+                properties: telemetryProperties
+            });
         } catch (err) {
             // Send error telemetry
+            this.telemetryClient.trackEvent({
+                name: 'RunFailed',
+                properties: telemetryProperties
+            });
             this.telemetryClient.trackException({
                 exception: err,
                 properties: telemetryProperties
             });
-            this.telemetryClient.flush()
 
             throw err;
+        } finally {
+            this.telemetryClient.flush();
         }
-
-        // Send performance telemetry
-        const endTime = new Date().getTime();
-        const elapsedTime = endTime - startTime;
-        this.telemetryClient.trackMetric({
-            name: 'RunPerformance',
-            value: elapsedTime,
-            properties: telemetryProperties
-        });
-        this.telemetryClient.flush()
 
         return result;
     }
