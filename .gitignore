@@ -6,4 +6,5 @@ dist
 .DS_Store
 **/.DS_Store
 test/assets/extracted/
+dist_gh_action/package.json
 
