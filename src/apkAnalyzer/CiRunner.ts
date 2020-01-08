@@ -50,8 +50,14 @@ export default class CiRunner {
 
         // Configure and enable telemetry
         appInsights.setup('0ba004b8-ff05-41fa-a241-3f026d68fc3a') // Change this to your own instrumentation key
+            .setAutoDependencyCorrelation(true)
+            .setAutoCollectRequests(true)
+            .setAutoCollectPerformance(true, true)
             .setAutoCollectExceptions(true)
-            .setSendLiveMetrics(false)
+            .setAutoCollectDependencies(true)
+            .setAutoCollectConsole(true)
+            .setUseDiskRetryCaching(true)
+            .setSendLiveMetrics(true)
             .start();
         this.telemetryClient = appInsights.defaultClient;
     }
