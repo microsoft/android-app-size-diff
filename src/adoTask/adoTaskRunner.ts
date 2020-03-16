@@ -40,7 +40,7 @@ export default class AdoTaskRunner {
         try {
             const adoCiCore = new AdoCiCore();
             const ciRunner = new CiRunner(adoCiCore);
-            await ciRunner.runWithTelemetry();
+            await ciRunner.run();
         }
         catch (err) {
             adoTask.setResult(adoTask.TaskResult.Failed, err.message);

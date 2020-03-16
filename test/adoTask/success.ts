@@ -12,5 +12,6 @@ tmr.setInput('targetAppLabel', 'Target APK');
 tmr.setInput('metrics', 'apkSize, installSize');
 tmr.setInput('thresholds', '20, 50');
 tmr.setInput('summaryOutputPath', 'dist/test/testReport.md');
+tmr.setInput('telemetryEnabled', 'false');
 
 tmr.run();

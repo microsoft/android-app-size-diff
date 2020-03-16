@@ -42,12 +42,28 @@ export interface CiCore {
 export default class CiRunner {
     ciCore: CiCore; // either Github action core or ADO Task
     thresholdChecker: ThresholdChecker;
-    telemetryClient: appInsights.TelemetryClient;
 
     constructor(ciCore: CiCore) {
         this.ciCore = ciCore;
         this.thresholdChecker = new ThresholdChecker(ciCore);
+    }
 
+    /**
+     * Runs the ci runner with telemetry enabled if set     
+     */
+    public async run() {
+        const telemetryEnabled = Boolean(JSON.parse(this.ciCore.getInput('telemetryEnabled')));
+
+        if (telemetryEnabled) {
+            console.log("Running with usage telemetry..");
+            return this.runAppSizeAnalysisWithTelemetry();
+        } else {
+            console.log("Running with telemetry disabled..");
+            return this.runAppSizeAnalysis();
+        }
+    }
+
+    private async runAppSizeAnalysisWithTelemetry() {
         // Configure and enable telemetry
         appInsights.setup('0ba004b8-ff05-41fa-a241-3f026d68fc3a') // Change this to your own instrumentation key
             .setAutoDependencyCorrelation(true)
@@ -59,28 +75,26 @@ export default class CiRunner {
             .setUseDiskRetryCaching(true)
             .setSendLiveMetrics(true)
             .start();
-        this.telemetryClient = appInsights.defaultClient;
-    }
+        const telemetryClient = appInsights.defaultClient;
 
-    public async runWithTelemetry() {
         // Send app start telemetry
         const startTime = new Date().getTime();
         const telemetryProperties = {
             ciName: this.ciCore.getCiName()
         }
-        this.telemetryClient.trackEvent({
+        telemetryClient.trackEvent({
             name: 'RunStarted',
             properties: telemetryProperties
         });
 
         var result: any;
         try {
-            result = await this.run();
+            result = await this.runAppSizeAnalysis();
 
             // Send success telemetry
             const endTime = new Date().getTime();
             const elapsedTime = endTime - startTime;
-            this.telemetryClient.trackEvent({
+            telemetryClient.trackEvent({
                 name: 'RunSuccess',
                 measurements: {
                     duration: elapsedTime
@@ -89,24 +103,24 @@ export default class CiRunner {
             });
         } catch (err) {
             // Send error telemetry
-            this.telemetryClient.trackEvent({
+            telemetryClient.trackEvent({
                 name: 'RunFailed',
                 properties: telemetryProperties
             });
-            this.telemetryClient.trackException({
+            telemetryClient.trackException({
                 exception: err,
                 properties: telemetryProperties
             });
 
             throw err;
         } finally {
-            this.telemetryClient.flush();
+            telemetryClient.flush();
         }
 
         return result;
     }
 
-    private async run() {
+    private async runAppSizeAnalysis() {
         const baseAppPath = this.ciCore.getInput('baseAppPath');
         const targetAppPath = this.ciCore.getInput('targetAppPath');
         const baseAppLabel = this.ciCore.getInput('baseAppLabel');

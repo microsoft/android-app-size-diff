@@ -10,7 +10,7 @@
     "version": {
         "Major": 0,
         "Minor": 0,
-        "Patch": 29
+        "Patch": 30
     },
     "instanceNameFormat": "Android App size change - $(baseAppPath) vs $(targetAppPath)",
     "inputs": [
@@ -69,6 +69,14 @@
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "A comma seperated list of thresholds for each of the metrics in bytes. If this is empty, no thresholding will apply. When this is not empty, the task will fail when any of the given thresholds are crossed."
+        },
+        {
+            "name": "telemetryEnabled",
+            "type": "string",
+            "label": "Telemetry enabled",
+            "defaultValue": "true",
+            "required": false,
+            "helpMarkDown": "Set to `false` to disable telemetry"
         }
     ],
     "execution": {
