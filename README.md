@@ -2,7 +2,7 @@
 
 This repository contains an [Azure DevOps Task](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/tasks?view=azure-devops&tabs=yaml) and a [GitHub Workflow Action](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idsteps). See below usage examples to start using this in your CI. 
 
-This is currently in very early stages so, features offered are very limited. See [contributing section](#contributing) below if you would like to chip in some features. At this stage, this repo is more of a skeleton upon which we hope to add more functionality. Once this is in a good state, we can be on top of our app size changes and very likely make this repo public.
+These are the minimal checks we run on our own PRs for [SwiftKey](https://play.google.com/store/apps/details?id=com.touchtype.swiftkey), however we're happy to accept contributions. See [contributing section](#contributing) below if you would like to expand this action's features.
 
 ## Usage examples
 
@@ -17,7 +17,7 @@ This is currently in very early stages so, features offered are very limited. Se
       displayName: Run APK size comparision
    ```
    
-- In a GitHub Workflow (only after this repo becomes public)
+- In a GitHub Workflow
 
    ```yml
      - uses: microsoft/android-app-size-diff@v0.27
@@ -72,8 +72,6 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 ## Setting up development
 
 Starting by cloning the repository. If your changes are small, feel free to open a PR with changes and the CI will take care of testing that everything still works with your changes. For something more long term or local testing, read on.
-
-When contributing, please be aware that **this repo will go public eventually**
 
 ### Installations
 - Install all global dependencies
