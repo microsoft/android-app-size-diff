@@ -40,7 +40,7 @@ export default class GithubActionRunner {
         try {
             const githubCore = new GithubCiCore();
             const ciRunner = new CiRunner(githubCore);
-            await ciRunner.runWithTelemetry();
+            await ciRunner.run();
         }
         catch (err) {
             ghAction.setFailed(err.message);

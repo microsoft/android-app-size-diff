@@ -32,6 +32,10 @@ inputs:
     description: 'A comma seperated list of thresholds for each of the metrics in bytes. If this is empty, no thresholding will apply. When this is not empty, the task will fail when any of the given thresholds are crossed'
     required: false
     default: ''
+  telemetryEnabled:
+    description: 'Set to `false` to disable telemetry'
+    required: false
+    default: 'true'
 runs:
   using: 'node12'
   main: 'dist_gh_action/index.js'

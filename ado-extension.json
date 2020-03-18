@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "android-app-size-diff-utils",
     "name": "Android app size changes",
-    "version": "0.0.29",
+    "version": "0.0.30",
     "publisher": "PraveenPendyala",
     "targets": [
         {
