@@ -31,7 +31,7 @@ import IReportor from './reporter/IReporter';
 
          includeMetrics.forEach((metric, index) => {
             const baseMetric = baseSummary.sizeMetrics[metric];
-            const targetMetric = baseSummary.sizeMetrics[metric];
+            const targetMetric = targetSummary.sizeMetrics[metric];
             const difference = targetMetric - baseMetric;
 
             comparisionReport.comparisionMetrics.push({
