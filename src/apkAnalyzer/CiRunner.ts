@@ -65,7 +65,7 @@ export default class CiRunner {
 
     private async runAppSizeAnalysisWithTelemetry() {
         // Configure and enable telemetry
-        appInsights.setup('0ba004b8-ff05-41fa-a241-3f026d68fc3a') // Change this to your own instrumentation key
+        appInsights.setup("InstrumentationKey=badea35a-1e7a-436e-bdbb-d2efc83ed8ee;IngestionEndpoint=https://ukwest-0.in.applicationinsights.azure.com/") // Change this to your own instrumentation key
             .setAutoDependencyCorrelation(true)
             .setAutoCollectRequests(true)
             .setAutoCollectPerformance(true, true)
