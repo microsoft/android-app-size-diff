@@ -20,7 +20,7 @@ These are the minimal checks we run on our own PRs for [SwiftKey](https://play.g
 - In a GitHub Workflow
 
    ```yml
-     - uses: microsoft/android-app-size-diff@v0.27
+     - uses: microsoft/android-app-size-diff@v0.32
        name: Run APK size comparision
        with:
         baseAppPath: test/assets/test.apk
