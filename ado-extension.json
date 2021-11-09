@@ -2,25 +2,39 @@
     "manifestVersion": 1,
     "id": "android-app-size-diff-utils",
     "name": "Android app size changes",
-    "version": "0.0.31",
-    "publisher": "PraveenPendyala",
+    "version": "1.0.5",
+    "publisher": "MSSwiftKey",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
         }
     ],
     "description": "Tools for Android app size changes",
+    "tags": [
+        "Android",
+        "App size",
+        "Developer tools"
+    ],
     "categories": [
         "Azure Pipelines"
     ],
     "icons": {
-        "default": "dist/src/assets/appSizeChangesIcon.png"
+        "default": "src/assets/appSizeChangesIcon.png"
     },
     "files": [
         {
             "path": "dist/src"
         }
     ],
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/microsoft/android-app-size-diff"
+    },
+    "content": {
+        "details": {
+            "path": "src/assets/overview.md"
+        }
+    },
     "contributions": [
         {
             "id": "android-app-size-diff",
@@ -32,5 +46,8 @@
                 "name": "dist/src"
             }
         }
+    ],
+    "galleryFlags": [
+        "Public"
     ]
 }
