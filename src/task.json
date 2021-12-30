@@ -8,9 +8,9 @@
     "category": "Utility",
     "author": "Microsoft",
     "version": {
-        "Major": 1,
+        "Major": 0,
         "Minor": 0,
-        "Patch": 5
+        "Patch": 31
     },
     "instanceNameFormat": "Android App size change - $(baseAppPath) vs $(targetAppPath)",
     "inputs": [

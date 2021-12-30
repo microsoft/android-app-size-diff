@@ -9,7 +9,7 @@ These are the minimal checks we run on our own PRs for [SwiftKey](https://play.g
 - In a Azure DevOps Pipeline
 
    ```yml
-    - task: android-app-size-diff@1
+    - task: android-app-size-diff@0
       inputs:
         baseAppPath: test/assets/test.apk
         targetAppPath: test/assets/test.apk
@@ -20,7 +20,7 @@ These are the minimal checks we run on our own PRs for [SwiftKey](https://play.g
 - In a GitHub Workflow
 
    ```yml
-     - uses: microsoft/android-app-size-diff@v1
+     - uses: microsoft/android-app-size-diff@v0.32
        name: Run APK size comparision
        with:
         baseAppPath: test/assets/test.apk
