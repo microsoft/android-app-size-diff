@@ -1,4 +1,6 @@
 # Introduction
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdgsdoug%2Fandroid-app-size-diff.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdgsdoug%2Fandroid-app-size-diff?ref=badge_shield)
+
 
 This repository contains an [Azure DevOps Task](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/tasks?view=azure-devops&tabs=yaml) and a [GitHub Workflow Action](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idsteps). See below usage examples to start using this in your CI. 
 
@@ -109,3 +111,7 @@ See `package.json` for full list of npm tasks. The below should be sufficient to
   - Likely a better way to test your changes
 - Bundle all plugins `npm run bundle`
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdgsdoug%2Fandroid-app-size-diff.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdgsdoug%2Fandroid-app-size-diff?ref=badge_large)
