@@ -38,3 +38,7 @@ steps:
     Verbosity: Information
     PackageName: 'Microsoft Android App Size Diff CI'
     PackageVersion: '$(PackageVersion)'
+
+- publish: $(build.artifactstagingdirectory)
+  artifact: app-size-diff
+  displayName: 'Publish artifacts to pipeline'
