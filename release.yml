@@ -27,6 +27,12 @@ steps:
   displayName: "Bundle ADO and GitHub extensions"
 
 - script: |
+    # Copy APKs
+    cp -r $(build.sourcesdirectory)/dist_gh_action $(build.artifactstagingdirectory)/
+    cp -r $(build.sourcesdirectory)/*.vsix $(build.artifactstagingdirectory)/
+  displayName: 'Copy extensions to artifacts'
+
+- script: |
     PackageVersion=$(node -e "console.log(require('./package.json').version);")
     echo "##vso[task.setVariable variable=PackageVersion;isOutput=true]$(PackageVersion)"
   displayName: Find bundle version
