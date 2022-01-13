@@ -108,7 +108,7 @@ export default class CiRunner {
                 properties: telemetryProperties
             });
             telemetryClient.trackException({
-                exception: err,
+                exception: err as Error,
                 properties: telemetryProperties
             });
 

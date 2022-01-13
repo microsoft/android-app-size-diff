@@ -43,7 +43,7 @@ export default class GithubActionRunner {
             await ciRunner.run();
         }
         catch (err) {
-            ghAction.setFailed(err.message);
+            ghAction.setFailed((err as Error).message);
         }
     }
 
