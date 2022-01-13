@@ -43,7 +43,7 @@ export default class AdoTaskRunner {
             await ciRunner.run();
         }
         catch (err) {
-            adoTask.setResult(adoTask.TaskResult.Failed, err.message);
+            adoTask.setResult(adoTask.TaskResult.Failed, (err as Error).message);
         }
     }
 
