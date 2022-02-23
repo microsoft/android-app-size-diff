@@ -1,0 +1,36 @@
+# Run the Credential Scanner check for security compliance. This then also
+# publishes the artifacts in a Microsoft compliant way.
+parameters:
+  isShipped: false
+  # This will be used for the Asset group name and should not have spaces as it may cause problems with ARROW processing.
+  buildName: 'android-app-size-diff'
+
+steps:
+- task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
+  displayName: 'Run Credential Scanner'
+  inputs:
+    debugMode: false
+
+- task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
+  displayName: 'Publish Guardian Artifacts'
+  inputs:
+    ArtifactType: M365
+
+- task: dikalya.AssetRetention.asset-retention-task.AssetRetention@3
+  displayName: 'ARtifact Retention Orchestrator Workflow (ARROW)'
+  inputs:
+    ArrowServiceConnection: 'Arrow_msresearch_JAVTUN'
+    AssetGroupName: '$(System.TeamProject)_${{ parameters.buildName }}'
+    AssetNumber: '$(Build.BuildId)'
+    IsShipped: ${{ parameters.isShipped }}
+    DropsToRetain: 'CodeAnalysisLogs'
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/'))
+
+- task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
+  displayName: 'Guardian Break'
+  inputs:
+    GdnBreakPolicyMinSev: Warning
+    GdnBreakAllTools: true
+    GdnBreakGdnToolCredScan: true
+    GdnBreakGdnToolCredScanSeverity: Warning
+    GdnBreakPolicy: M365
