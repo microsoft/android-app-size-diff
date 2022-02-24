@@ -1,0 +1,20 @@
+# Checks for Component Governance and CredScan
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-18.04
+  demands:
+  - msbuild
+  - npm
+  
+variables:
+  GDN_VERSION: '0.110.0-linux'
+  GDNP_VERSION: '1.61.0-linux'
+
+steps:
+- template: templates/credscan.yml
+  parameters:
+    buildName: 'android-app-size-diff-$(Build.SourceBranch)'
+
+- template: templates/component-governance.yml

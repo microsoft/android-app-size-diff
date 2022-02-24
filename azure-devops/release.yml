@@ -4,7 +4,14 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: ubuntu-18.04
+  demands:
+  - msbuild
+  - npm
+  
+variables:
+  GDN_VERSION: '0.110.0-linux'
+  GDNP_VERSION: '1.61.0-linux'
 
 steps:
 - task: NodeTool@0
@@ -44,6 +51,13 @@ steps:
     Verbosity: Information
     PackageName: 'Microsoft Android App Size Diff CI'
     PackageVersion: '$(PackageVersion)'
+
+- template: templates/credscan.yml
+  parameters:
+    isShipped: true
+    buildName: 'android-app-size-diff-release'
+
+- template: templates/component-governance.yml
 
 - publish: $(build.artifactstagingdirectory)
   artifact: app-size-diff
