@@ -33,7 +33,7 @@
     },
     "homepage": "https://github.com/microsoft/android-app-size-ci#readme",
     "dependencies": {
-        "@actions/core": "^1.2.6",
+        "@actions/core": "^1.9.1",
         "@types/adm-zip": "^0.4.32",
         "@types/line-reader": "0.0.28",
         "adm-zip": "^0.4.13",
