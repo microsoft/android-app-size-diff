@@ -37,5 +37,5 @@ inputs:
     required: false
     default: 'true'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist_gh_action/index.js'
